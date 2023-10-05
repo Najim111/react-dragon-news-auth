@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import Navbar from "../Shared/Navbar/Navbar";
 import { useContext } from "react";
 import { AuthContex } from "../../Provider/AuthProvider";
@@ -6,16 +6,25 @@ import { AuthContex } from "../../Provider/AuthProvider";
 
 const Login = () => {
     const { singnIn } = useContext(AuthContex)
+    // location karbr
+    const location = useLocation()
+    const navigate = useNavigate()
+
     const handeleLogin = e => {
         e.preventDefault()
         // console.log(e.currentTarget);
         const from = new FormData(e.currentTarget)
         const email = from.get("email")
         const password = from.get("password")
-        
-        singnIn(email,password)
+
+        singnIn(email, password)
             .then(res => {
                 console.log(res.user);
+
+                navigate(location?.state ? location.state : '/')
+
+
+
             })
             .catch(err => {
                 console.error(err);
